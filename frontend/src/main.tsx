@@ -9,42 +9,24 @@ import { Streamlit } from "streamlit-component-lib";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { withStreamlitConnection } from "streamlit-component-lib";
-import Calendar from "./components/Calendar";
-import { CalendarComponentProps } from "./types/activity";
 
 /**
  * App component - wraps Calendar with Streamlit integration.
  */
-const App: React.FC = (props: any) => {
+const App: React.FC = () => {
 
   useEffect(() => {
-    const resize = () => {
-      Streamlit.setFrameHeight(document.body.scrollHeight);
-    };
-
-    resize();
-
-    const observer = new ResizeObserver(resize);
-    observer.observe(document.body);
-
-    return () => observer.disconnect();
+    console.log("SET FRAME HEIGHT RUNNING");
+    Streamlit.setFrameHeight(800);
   }, []);
 
-  const componentProps: CalendarComponentProps = props.args?.props || {
-    events: [],
-    theme: {},
-    config: {
-      startHour: 6,
-      endHour: 22,
-      selectable: true,
-      showTimeLabels: true,
-      compactMode: false,
-      enableActivityPopover: true,
-    },
-  };
-
-  return <Calendar {...componentProps} />;
+  return (
+    <div style={{ height: 800, background: "red" }}>
+      TEST COMPONENT
+    </div>
+  );
 };
+
 
 // Wrap with Streamlit connection for component library
 const AppWithStreamlit = withStreamlitConnection(App);
