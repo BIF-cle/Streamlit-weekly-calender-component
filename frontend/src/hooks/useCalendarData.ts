@@ -6,11 +6,12 @@
  * - Organizing events by time slot and day
  * - Computing day columns and time slots
  * - Managing week navigation
+ * - Detecting which week(s) contain events
  */
 
 import { useMemo } from "react";
 import dayjs from "dayjs";
-import { CalendarEvent, CalendarState, DayColumn, TimeSlot } from "../types/activity";
+import { CalendarEvent, CalendarState, DayColumn, TimeSlot, WeekInfo } from "../types/activity";
 import { CalendarConfig } from "../types/activity";
 
 interface UseCalendarDataProps {
@@ -18,6 +19,7 @@ interface UseCalendarDataProps {
   config: CalendarConfig;
   selectedCellRow?: number | null;
   selectedCellColumn?: number | null;
+  weeks?: WeekInfo[];
 }
 
 /**
@@ -44,19 +46,57 @@ function getDayName(date: dayjs.Dayjs): string {
   return date.format("ddd");
 }
 
+/**
+ * Extract date portion from ISO string (handles both date and datetime formats).
+ */
+function getDateFromStart(start: string): string {
+  return start.substring(0, 10);
+}
+
+/**
+ * Detect which week the events belong to, or use provided weeks.
+ * Returns the start date of the week to display.
+ */
+function detectDisplayWeek(events: CalendarEvent[], weeks?: WeekInfo[]): string {
+  // If weeks are provided, use the first one
+  if (weeks && weeks.length > 0) {
+    return weeks[0].start_date;
+  }
+
+  // If we have events, find the earliest event date and get its week start
+  if (events.length > 0) {
+    const earliestEvent = events.reduce((min, event) => {
+      const eventDate = getDateFromStart(event.start);
+      const minDate = getDateFromStart(min.start);
+      return eventDate < minDate ? event : min;
+    });
+
+    const eventDate = getDateFromStart(earliestEvent.start);
+    const eventDayjs = dayjs(eventDate);
+    const weekStart = getWeekStart(eventDayjs);
+    return weekStart.format("YYYY-MM-DD");
+  }
+
+  // Fall back to current week
+  const now = dayjs();
+  const weekStart = getWeekStart(now);
+  return weekStart.format("YYYY-MM-DD");
+}
+
 export function useCalendarData({
   events,
   config,
   selectedCellRow,
   selectedCellColumn,
+  weeks,
 }: UseCalendarDataProps): CalendarState {
   return useMemo(() => {
     const startHour = config.startHour;
     const endHour = config.endHour;
 
-    // Get current week
-    const now = dayjs();
-    const weekStart = getWeekStart(now);
+    // Detect which week to display
+    const weekStartStr = detectDisplayWeek(events, weeks);
+    const weekStart = dayjs(weekStartStr).startOf("day");
     const weekEnd = weekStart.add(6, "days");
 
     // Build day columns (Monday - Sunday)
@@ -66,7 +106,7 @@ export function useCalendarData({
 
       // Get events for this day
       const dayEvents = events.filter(
-        (e) => e.start.substring(0, 10) === dateStr
+        (e) => getDateFromStart(e.start) === dateStr
       );
 
       return {
@@ -83,9 +123,16 @@ export function useCalendarData({
       { length: endHour - startHour + 1 },
       (_, i) => {
         const hour = startHour + i;
-        const eventsForSlot = events.filter(
-          (e) => new Date(e.start).getHours() === hour
-        );
+
+        // Get all events for this hour (across all days in this week)
+        const eventsForSlot = events.filter((e) => {
+          try {
+            const eventHour = new Date(e.start).getHours();
+            return eventHour === hour;
+          } catch {
+            return false;
+          }
+        });
 
         return {
           hour,
@@ -101,8 +148,15 @@ export function useCalendarData({
         const day = days[colIdx];
         const timeSlot = timeSlots[rowIdx];
 
-        // Get activities for this cell
-        const cellActivities = day.activities;
+        // Get activities for this specific cell (day + hour)
+        const cellActivities = day.activities.filter((activity) => {
+          try {
+            const activityHour = new Date(activity.start).getHours();
+            return activityHour === timeSlot.hour;
+          } catch {
+            return false;
+          }
+        });
 
         const isSelected =
           selectedCellRow === rowIdx && selectedCellColumn === colIdx;
@@ -137,5 +191,5 @@ export function useCalendarData({
       selectedActivity: null,
       hoveredCell: null,
     };
-  }, [events, config, selectedCellRow, selectedCellColumn]);
+  }, [events, config, selectedCellRow, selectedCellColumn, weeks]);
 }

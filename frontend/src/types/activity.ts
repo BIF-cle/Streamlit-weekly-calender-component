@@ -7,8 +7,8 @@
 
 export interface CalendarEvent {
   id: string;
-  start: string; // ISO date string
-  end?: string; // ISO date string
+  start: string; // ISO date string or datetime string
+  end?: string; // ISO date string or datetime string
   title: string;
   color?: string; // Hex color code
   category?: string;
@@ -16,6 +16,13 @@ export interface CalendarEvent {
   playerName?: string;
   metadata?: Record<string, any>;
   raw?: any; // Original domain object
+}
+
+export interface WeekInfo {
+  week_number: number;
+  year: number;
+  start_date: string; // ISO date string
+  end_date?: string; // ISO date string
 }
 
 export interface CellCoordinates {
@@ -62,6 +69,7 @@ export interface CalendarComponentProps {
   theme: ThemeConfig;
   config: CalendarConfig;
   version?: string;
+  weeks?: WeekInfo[];
 }
 
 export interface DayColumn {

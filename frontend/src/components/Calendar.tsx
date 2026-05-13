@@ -37,6 +37,7 @@ const Calendar: React.FC<CalendarProps> = ({
   events,
   theme,
   config,
+  weeks,
 }) => {
   // Apply theme
   useTheme(theme);
@@ -50,6 +51,7 @@ const Calendar: React.FC<CalendarProps> = ({
     config,
     selectedCellRow: selectedCell?.row ?? null,
     selectedCellColumn: selectedCell?.column ?? null,
+    weeks,
   });
 
   // Setup selection handlers

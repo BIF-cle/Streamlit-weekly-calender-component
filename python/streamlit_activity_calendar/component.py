@@ -64,6 +64,7 @@ def activity_calendar(
     show_time_labels: bool = True,
     compact_mode: bool = False,
     enable_activity_popover: bool = True,
+    weeks: Optional[List[Dict[str, Any]]] = None,
     key: str = "activity_calendar",
 ) -> Optional[Union[ActivitySelectionPayload, CellSelectionPayload]]:
     """
@@ -108,6 +109,15 @@ def activity_calendar(
         compact_mode: Use compact layout. Default: False
         
         enable_activity_popover: Show activity details popover. Default: True
+        
+        weeks: Optional list of week information dicts. Each dict should have:
+               - week_number: ISO week number (1-53)
+               - year: Year (e.g., 2026)
+               - start_date: ISO date string (e.g., "2026-05-04")
+               - end_date: Optional ISO date string
+               If provided, the calendar will display the week range starting
+               with the first week in this list. If not provided, the calendar
+               will detect the week containing events.
         
         key: Unique component key for Streamlit. Default: "activity_calendar"
     
@@ -257,6 +267,10 @@ def activity_calendar(
         "config": calendar_config,
         "version": "1.0.0",
     }
+    
+    # Optionally add weeks data if provided
+    if weeks:
+        component_props["weeks"] = weeks
     
     # Call the React component
     result = _activity_calendar(props=component_props, key=key)
