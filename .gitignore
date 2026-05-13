@@ -48,9 +48,14 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Frontend build
+# Frontend build (dev directory — pre-built package dist is committed separately)
 frontend/dist/
 frontend/node_modules/
+
+# Allow the pre-built frontend bundled inside the Python package
+!python/streamlit_activity_calendar/frontend/
+!python/streamlit_activity_calendar/frontend/dist/
+!python/streamlit_activity_calendar/frontend/dist/**
 
 # Testing
 .pytest_cache/

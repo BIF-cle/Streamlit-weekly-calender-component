@@ -12,7 +12,7 @@ export default defineConfig({
   plugins: [react()],
   base: "./",
   build: {
-    outDir: "dist",
+    outDir: "../python/streamlit_activity_calendar/frontend/dist",
     sourcemap: false,
     minify: "terser",
     rollupOptions: {
