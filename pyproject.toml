@@ -100,3 +100,8 @@ warn_redundant_casts = true
 warn_unused_ignores = true
 warn_no_return = true
 check_untyped_defs = true
+
+[tool.hatch.build]
+include = [
+    "python/streamlit_activity_calendar/frontend/dist/**"
+]
