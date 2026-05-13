@@ -10,6 +10,7 @@ A **production-quality Streamlit custom component** for interactive weekly activ
 
 ## 🎯 Features
 
+
 - **Weekly Calendar View** - Clean, CSS Grid-based weekly calendar rendering
 - **Flexible Data Adapters** - Transform nested domain data into calendar events
 - **Activity Selection** - Cell and activity-level selection with event emission
