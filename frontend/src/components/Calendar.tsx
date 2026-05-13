@@ -73,6 +73,7 @@ const Calendar: React.FC<CalendarProps> = ({
     );
   }
 
+  // Fix height
   useEffect(() => {
     const resize = () => {
       Streamlit.setFrameHeight(document.body.scrollHeight);
