@@ -34,12 +34,23 @@ from .utils import (
 
 
 # Get the absolute path to the component's built directory
-_COMPONENT_DIR = os.path.join(os.path.dirname(__file__), "../../frontend/dist")
+_COMPONENT_DIR = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "frontend",
+    "dist",
+)
+
 
 # Create the component wrapper
+if not os.path.exists(_COMPONENT_DIR):
+    raise RuntimeError(
+        f"Component build directory not found: {_COMPONENT_DIR}\n"
+        "Did you run `npm run build` in the frontend folder?"
+    )
+
 _activity_calendar = components.declare_component(
     "activity_calendar",
-    path=_COMPONENT_DIR if os.path.exists(_COMPONENT_DIR) else "",
+    path=_COMPONENT_DIR,
 )
 
 
