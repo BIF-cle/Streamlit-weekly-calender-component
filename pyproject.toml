@@ -61,6 +61,12 @@ Repository = "https://github.com/yourusername/streamlit-activity-calendar.git"
 
 [tool.hatch.build.targets.wheel]
 packages = ["python/streamlit_activity_calendar"]
+artifacts = [
+    "python/streamlit_activity_calendar/frontend/dist/**",
+]
+
+[tool.hatch.build.targets.wheel.force-include]
+"python/streamlit_activity_calendar/frontend/dist" = "streamlit_activity_calendar/frontend/dist"
 
 [tool.black]
 line-length = 88
@@ -103,5 +109,5 @@ check_untyped_defs = true
 
 [tool.hatch.build]
 include = [
-    "python/streamlit_activity_calendar/frontend/dist/**"
+    "python/streamlit_activity_calendar/**",
 ]
