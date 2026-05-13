@@ -4,6 +4,8 @@
  * This initializes the Streamlit component and renders the Calendar.
  */
 
+import { useEffect } from "react";
+import { Streamlit } from "streamlit-component-lib";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { withStreamlitConnection } from "streamlit-component-lib";
@@ -14,7 +16,20 @@ import { CalendarComponentProps } from "./types/activity";
  * App component - wraps Calendar with Streamlit integration.
  */
 const App: React.FC = (props: any) => {
-  // The props are passed from Streamlit's custom component system
+
+  useEffect(() => {
+    const resize = () => {
+      Streamlit.setFrameHeight(document.body.scrollHeight);
+    };
+
+    resize();
+
+    const observer = new ResizeObserver(resize);
+    observer.observe(document.body);
+
+    return () => observer.disconnect();
+  }, []);
+
   const componentProps: CalendarComponentProps = props.args?.props || {
     events: [],
     theme: {},
