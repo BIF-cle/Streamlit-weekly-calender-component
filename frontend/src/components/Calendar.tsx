@@ -9,6 +9,7 @@
  * - Streamlit communication
  */
 
+import { useEffect } from "react";
 import React from "react";
 import { Streamlit } from "streamlit-component-lib";
 import { CalendarComponentProps } from "../types/activity";
@@ -71,6 +72,19 @@ const Calendar: React.FC<CalendarProps> = ({
       </div>
     );
   }
+
+  useEffect(() => {
+    const resize = () => {
+      Streamlit.setFrameHeight(document.body.scrollHeight);
+    };
+
+    resize();
+
+    const observer = new ResizeObserver(resize);
+    observer.observe(document.body);
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div className="calendar-container">
