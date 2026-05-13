@@ -60,10 +60,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
       )}
 
       {showPopover && enablePopover && (
-        <ActivityPopover
-          activity={activity}
-          onClose={() => setShowPopover(false)}
-        />
+        <ActivityPopover activity={activity} />
       )}
     </div>
   );

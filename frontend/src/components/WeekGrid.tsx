@@ -81,7 +81,7 @@ const WeekGrid: React.FC<WeekGridProps> = ({
 
         {/* Calendar Grid */}
         <div className={`calendar-grid ${compactMode ? "compact" : ""}`}>
-          {calendarData.cells.map((row, rowIdx) =>
+          {calendarData.cells.map((row) =>
             row.map((cell) => (
               <ActivityCell
                 key={`cell-${cell.row}-${cell.column}`}

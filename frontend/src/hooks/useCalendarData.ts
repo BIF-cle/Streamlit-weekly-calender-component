@@ -44,30 +44,6 @@ function getDayName(date: dayjs.Dayjs): string {
   return date.format("ddd");
 }
 
-/**
- * Process events for a specific time slot and day.
- */
-function getEventsForSlot(
-  events: CalendarEvent[],
-  slotHour: number,
-  dayDate: string
-): CalendarEvent[] {
-  return events.filter((event) => {
-    const eventStart = dayjs(event.start);
-    const eventHour = eventStart.hour();
-    
-    // For now, events are date-based, not time-based
-    // Check if event date matches and hour is relevant
-    if (eventStart.format("YYYY-MM-DD") !== dayDate) {
-      return false;
-    }
-
-    // Events span all time slots for their day (simplified rendering)
-    // In advanced version, could parse event times
-    return true;
-  });
-}
-
 export function useCalendarData({
   events,
   config,
@@ -150,13 +126,14 @@ export function useCalendarData({
       days,
       timeSlots,
       cells: cellGrid,
-      selectedCell: selectedCellRow !== null && selectedCellColumn !== null
-        ? {
-            row: selectedCellRow,
-            column: selectedCellColumn,
-            date: days[selectedCellColumn]?.date,
-          }
-        : null,
+      selectedCell:
+        selectedCellRow != null && selectedCellColumn != null
+          ? {
+              row: selectedCellRow,
+              column: selectedCellColumn,
+              date: days[selectedCellColumn].date,
+            }
+          : null,
       selectedActivity: null,
       hoveredCell: null,
     };

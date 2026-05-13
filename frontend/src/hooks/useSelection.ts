@@ -31,7 +31,6 @@ export interface UseSelectionReturn {
  */
 export function useSelection({
   selectable,
-  enableActivityPopover,
 }: UseSelectionProps): UseSelectionReturn {
   const {
     selectedCell,

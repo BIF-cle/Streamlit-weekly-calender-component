@@ -13,7 +13,6 @@ import { CalendarEvent } from "../types/activity";
 
 interface ActivityPopoverProps {
   activity: CalendarEvent;
-  onClose: () => void;
 }
 
 /**
@@ -21,7 +20,6 @@ interface ActivityPopoverProps {
  */
 const ActivityPopover: React.FC<ActivityPopoverProps> = ({
   activity,
-  onClose,
 }) => {
   const formatDate = (dateStr: string): string => {
     try {

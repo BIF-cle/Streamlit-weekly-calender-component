@@ -6,8 +6,8 @@
 
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { Streamlit, withStreamlitConnection } from "streamlit-component-lib";
-import Calendar from "./Calendar";
+import { withStreamlitConnection } from "streamlit-component-lib";
+import Calendar from "./components/Calendar";
 import { CalendarComponentProps } from "./types/activity";
 
 /**

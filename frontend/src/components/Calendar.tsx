@@ -9,13 +9,9 @@
  * - Streamlit communication
  */
 
-import React, { useMemo } from "react";
+import React from "react";
 import { Streamlit } from "streamlit-component-lib";
-import {
-  CalendarEvent,
-  CalendarComponentProps,
-  CellCoordinates,
-} from "../types/activity";
+import { CalendarComponentProps } from "../types/activity";
 import { useCalendarData } from "../hooks/useCalendarData";
 import { useSelection } from "../hooks/useSelection";
 import { useTheme } from "../hooks/useTheme";
