@@ -88,7 +88,6 @@ if selection:
 ```
 
 ### CRUD Application
-
 ```python
 import streamlit as st
 from streamlit_activity_calendar import activity_calendar
